@@ -1,0 +1,48 @@
+plugins {
+    id "application"
+    id "org.jetbrains.kotlin.jvm" version "1.5.31"
+}
+
+group "com.icuxika"
+version "1.0.0"
+
+application {
+    mainModule.set("application")
+    mainClass.set("com.icuxika.MainApp")
+}
+
+repositories {
+    mavenCentral()
+}
+
+compileKotlin.destinationDirectory = compileJava.destinationDirectory
+
+def platform
+if (org.gradle.internal.os.OperatingSystem.current().windows) {
+    platform = "win"
+} else if (org.gradle.internal.os.OperatingSystem.current().linux) {
+    platform = "linux"
+} else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+    platform = "mac"
+}
+
+dependencies {
+    implementation "org.openjfx:javafx-base:17.0.0.1:${platform}"
+    implementation "org.openjfx:javafx-controls:17.0.0.1:${platform}"
+    implementation "org.openjfx:javafx-graphics:17.0.0.1:${platform}"
+    implementation "org.openjfx:javafx-fxml:17.0.0.1:${platform}"
+    implementation "org.openjfx:javafx-swing:17.0.0.1:${platform}"
+    implementation "org.openjfx:javafx-media:17.0.0.1:${platform}"
+    implementation "org.openjfx:javafx-web:17.0.0.1:${platform}"
+
+    implementation("com.github.almasb:fxgl:11.17") {
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib"
+    }
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
+}
+
+test {
+    useJUnitPlatform()
+}
